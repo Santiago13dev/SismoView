@@ -1,0 +1,896 @@
+<html>
+    <head>
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Checkstyle Violations</title>
+        <style type="text/css">
+                    body {
+                        background-color: #fff;
+                        color: #02303A;
+                    }
+
+                    a {
+                        color: #1DA2BD;
+                    }
+                    a.link {
+                        color: #02303A;
+                    }
+
+                    p {
+                        font-size: 1rem;
+                    }
+
+                    h1 a[name] {
+                        margin: 0;
+                        padding: 0;
+                    }
+
+                    tr:nth-child(even) {
+                        background: white;
+                    }
+
+                    th {
+                        font-weight:bold;
+                    }
+                    tr {
+                        background: #efefef;
+                    }
+                    table th, td, tr {
+                        font-size:100%;
+                        border: none;
+                        text-align: left;
+                        vertical-align: top;
+                    }
+                </style>
+    </head>
+    <body>
+        <p>
+            <a name="top">
+                <h1>Checkstyle Results</h1>
+            </a>
+        </p>
+        <hr align="left" width="95%" size="1">
+        <h2>Summary</h2>
+        <table class="summary" width="95%">
+            <tr>
+                <th>Total files checked</th><th>Total violations</th><th>Files with violations</th>
+            </tr>
+            <tr>
+                <td>20</td><td>191</td><td>15</td>
+            </tr>
+        </table>
+        <hr align="left" width="95%" size="1">
+        <div class="violations">
+            <h2>Violations</h2>
+            <p>
+                <table class="filelist" width="95%">
+                    <tr>
+                        <th>File</th><th>Total violations</th>
+                    </tr>
+                    <tr>
+                        <td><a href="#N66388">C:\Users\kevin\Desktop\SantiagoDev\SismoView\sismoview\backend\src\main\java\com\sismoview\domain\models\Quake.java</a></td><td>46</td>
+                    </tr>
+                    <tr>
+                        <td><a href="#N65546">C:\Users\kevin\Desktop\SantiagoDev\SismoView\sismoview\backend\src\main\java\com\sismoview\adapters\rest\dto\SeismicRequest.java</a></td><td>20</td>
+                    </tr>
+                    <tr>
+                        <td><a href="#N66018">C:\Users\kevin\Desktop\SantiagoDev\SismoView\sismoview\backend\src\main\java\com\sismoview\domain\EarthGeometry.java</a></td><td>18</td>
+                    </tr>
+                    <tr>
+                        <td><a href="#N66781">C:\Users\kevin\Desktop\SantiagoDev\SismoView\sismoview\backend\src\main\java\com\sismoview\domain\models\TsunamiResult.java</a></td><td>15</td>
+                    </tr>
+                    <tr>
+                        <td><a href="#N65778">C:\Users\kevin\Desktop\SantiagoDev\SismoView\sismoview\backend\src\main\java\com\sismoview\adapters\rest\dto\TsunamiResponse.java</a></td><td>14</td>
+                    </tr>
+                    <tr>
+                        <td><a href="#N65880">C:\Users\kevin\Desktop\SantiagoDev\SismoView\sismoview\backend\src\main\java\com\sismoview\adapters\rest\SismoController.java</a></td><td>14</td>
+                    </tr>
+                    <tr>
+                        <td><a href="#N65690">C:\Users\kevin\Desktop\SantiagoDev\SismoView\sismoview\backend\src\main\java\com\sismoview\adapters\rest\dto\SeismicResponse.java</a></td><td>12</td>
+                    </tr>
+                    <tr>
+                        <td><a href="#N66300">C:\Users\kevin\Desktop\SantiagoDev\SismoView\sismoview\backend\src\main\java\com\sismoview\domain\models\LegendItem.java</a></td><td>12</td>
+                    </tr>
+                    <tr>
+                        <td><a href="#N66148">C:\Users\kevin\Desktop\SantiagoDev\SismoView\sismoview\backend\src\main\java\com\sismoview\domain\models\Arrival.java</a></td><td>9</td>
+                    </tr>
+                    <tr>
+                        <td><a href="#N66714">C:\Users\kevin\Desktop\SantiagoDev\SismoView\sismoview\backend\src\main\java\com\sismoview\domain\models\RingSegment.java</a></td><td>9</td>
+                    </tr>
+                    <tr>
+                        <td><a href="#N66240">C:\Users\kevin\Desktop\SantiagoDev\SismoView\sismoview\backend\src\main\java\com\sismoview\domain\models\IntensityResult.java</a></td><td>8</td>
+                    </tr>
+                    <tr>
+                        <td><a href="#N66898">C:\Users\kevin\Desktop\SantiagoDev\SismoView\sismoview\backend\src\main\java\com\sismoview\service\SeismicService.java</a></td><td>5</td>
+                    </tr>
+                    <tr>
+                        <td><a href="#N65986">C:\Users\kevin\Desktop\SantiagoDev\SismoView\sismoview\backend\src\main\java\com\sismoview\config\WebConfig.java</a></td><td>4</td>
+                    </tr>
+                    <tr>
+                        <td><a href="#N66215">C:\Users\kevin\Desktop\SantiagoDev\SismoView\sismoview\backend\src\main\java\com\sismoview\domain\models\City.java</a></td><td>3</td>
+                    </tr>
+                    <tr>
+                        <td><a href="#N66937">C:\Users\kevin\Desktop\SantiagoDev\SismoView\sismoview\backend\src\main\java\com\sismoview\service\TsunamiService.java</a></td><td>2</td>
+                    </tr>
+                </table>
+                <p></p>
+                
+                <div class="file-violation">
+                    <h3>
+                        <a class="link" name="N65546">C:\Users\kevin\Desktop\SantiagoDev\SismoView\sismoview\backend\src\main\java\com\sismoview\adapters\rest\dto\SeismicRequest.java</a>
+                    </h3>
+                    <table class="violationlist" width="95%">
+                        <tr>
+                            <th>Severity</th><th>Description</th><th>Line Number</th>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'{' no est&aacute; precedido de espacio en blanco.</td><td>16</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'{' no est&aacute; precedido de espacio en blanco.</td><td>17</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'{' no est&aacute; precedido de espacio en blanco.</td><td>18</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'{' no est&aacute; precedido de espacio en blanco.</td><td>19</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'{' no est&aacute; precedido de espacio en blanco.</td><td>20</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'{' no est&aacute; precedido de espacio en blanco.</td><td>22</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'=' no est&aacute; precedido de espacio en blanco.</td><td>22</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'=' no est&aacute; seguido de espacio en blanco.</td><td>22</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'{' no est&aacute; precedido de espacio en blanco.</td><td>23</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'=' no est&aacute; precedido de espacio en blanco.</td><td>23</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'=' no est&aacute; seguido de espacio en blanco.</td><td>23</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'{' no est&aacute; precedido de espacio en blanco.</td><td>24</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'=' no est&aacute; precedido de espacio en blanco.</td><td>24</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'=' no est&aacute; seguido de espacio en blanco.</td><td>24</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'{' no est&aacute; precedido de espacio en blanco.</td><td>25</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'=' no est&aacute; precedido de espacio en blanco.</td><td>25</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'=' no est&aacute; seguido de espacio en blanco.</td><td>25</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'{' no est&aacute; precedido de espacio en blanco.</td><td>26</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'=' no est&aacute; precedido de espacio en blanco.</td><td>26</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'=' no est&aacute; seguido de espacio en blanco.</td><td>26</td>
+                        </tr>
+                    </table>
+                    <p></p>
+                    <a href="#top">Back to top</a>
+                    <p></p>
+                </div>
+                <div class="file-violation">
+                    <h3>
+                        <a class="link" name="N65690">C:\Users\kevin\Desktop\SantiagoDev\SismoView\sismoview\backend\src\main\java\com\sismoview\adapters\rest\dto\SeismicResponse.java</a>
+                    </h3>
+                    <table class="violationlist" width="95%">
+                        <tr>
+                            <th>Severity</th><th>Description</th><th>Line Number</th>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'{' no est&aacute; precedido de espacio en blanco.</td><td>14</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'{' no est&aacute; precedido de espacio en blanco.</td><td>15</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'{' no est&aacute; precedido de espacio en blanco.</td><td>16</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'{' no est&aacute; precedido de espacio en blanco.</td><td>18</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'=' no est&aacute; precedido de espacio en blanco.</td><td>18</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'=' no est&aacute; seguido de espacio en blanco.</td><td>18</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'{' no est&aacute; precedido de espacio en blanco.</td><td>19</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'=' no est&aacute; precedido de espacio en blanco.</td><td>19</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'=' no est&aacute; seguido de espacio en blanco.</td><td>19</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'{' no est&aacute; precedido de espacio en blanco.</td><td>20</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'=' no est&aacute; precedido de espacio en blanco.</td><td>20</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'=' no est&aacute; seguido de espacio en blanco.</td><td>20</td>
+                        </tr>
+                    </table>
+                    <p></p>
+                    <a href="#top">Back to top</a>
+                    <p></p>
+                </div>
+                <div class="file-violation">
+                    <h3>
+                        <a class="link" name="N65778">C:\Users\kevin\Desktop\SantiagoDev\SismoView\sismoview\backend\src\main\java\com\sismoview\adapters\rest\dto\TsunamiResponse.java</a>
+                    </h3>
+                    <table class="violationlist" width="95%">
+                        <tr>
+                            <th>Severity</th><th>Description</th><th>Line Number</th>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>',' no est&aacute; seguido de espacio en blanco.</td><td>8</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>',' no est&aacute; seguido de espacio en blanco.</td><td>9</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>',' no est&aacute; seguido de espacio en blanco.</td><td>11</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'{' no est&aacute; precedido de espacio en blanco.</td><td>11</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>',' no est&aacute; seguido de espacio en blanco.</td><td>12</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'{' no est&aacute; precedido de espacio en blanco.</td><td>12</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>',' no est&aacute; seguido de espacio en blanco.</td><td>14</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'{' no est&aacute; precedido de espacio en blanco.</td><td>14</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'=' no est&aacute; precedido de espacio en blanco.</td><td>14</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'=' no est&aacute; seguido de espacio en blanco.</td><td>14</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>',' no est&aacute; seguido de espacio en blanco.</td><td>15</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'{' no est&aacute; precedido de espacio en blanco.</td><td>15</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'=' no est&aacute; precedido de espacio en blanco.</td><td>15</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'=' no est&aacute; seguido de espacio en blanco.</td><td>15</td>
+                        </tr>
+                    </table>
+                    <p></p>
+                    <a href="#top">Back to top</a>
+                    <p></p>
+                </div>
+                <div class="file-violation">
+                    <h3>
+                        <a class="link" name="N65880">C:\Users\kevin\Desktop\SantiagoDev\SismoView\sismoview\backend\src\main\java\com\sismoview\adapters\rest\SismoController.java</a>
+                    </h3>
+                    <table class="violationlist" width="95%">
+                        <tr>
+                            <th>Severity</th><th>Description</th><th>Line Number</th>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'{' no est&aacute; precedido de espacio en blanco.</td><td>31</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'{' no est&aacute; precedido de espacio en blanco.</td><td>36</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'for' no est&aacute; seguido de espacio en blanco.</td><td>40</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'for' no est&aacute; seguido de espacio en blanco.</td><td>40</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'{' no est&aacute; precedido de espacio en blanco.</td><td>40</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'if' no est&aacute; seguido de espacio en blanco.</td><td>41</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'if' no est&aacute; seguido de espacio en blanco.</td><td>41</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'!=' no est&aacute; precedido de espacio en blanco.</td><td>45</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'!=' no est&aacute; seguido de espacio en blanco.</td><td>45</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>',' no est&aacute; seguido de espacio en blanco.</td><td>45</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>',' no est&aacute; seguido de espacio en blanco.</td><td>45</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'{' no est&aacute; precedido de espacio en blanco.</td><td>57</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>',' no est&aacute; seguido de espacio en blanco.</td><td>59</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'{' no est&aacute; precedido de espacio en blanco.</td><td>66</td>
+                        </tr>
+                    </table>
+                    <p></p>
+                    <a href="#top">Back to top</a>
+                    <p></p>
+                </div>
+                
+                <div class="file-violation">
+                    <h3>
+                        <a class="link" name="N65986">C:\Users\kevin\Desktop\SantiagoDev\SismoView\sismoview\backend\src\main\java\com\sismoview\config\WebConfig.java</a>
+                    </h3>
+                    <table class="violationlist" width="95%">
+                        <tr>
+                            <th>Severity</th><th>Description</th><th>Line Number</th>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>',' no est&aacute; seguido de espacio en blanco.</td><td>12</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>',' no est&aacute; seguido de espacio en blanco.</td><td>12</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>',' no est&aacute; seguido de espacio en blanco.</td><td>12</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>',' no est&aacute; seguido de espacio en blanco.</td><td>12</td>
+                        </tr>
+                    </table>
+                    <p></p>
+                    <a href="#top">Back to top</a>
+                    <p></p>
+                </div>
+                <div class="file-violation">
+                    <h3>
+                        <a class="link" name="N66018">C:\Users\kevin\Desktop\SantiagoDev\SismoView\sismoview\backend\src\main\java\com\sismoview\domain\EarthGeometry.java</a>
+                    </h3>
+                    <table class="violationlist" width="95%">
+                        <tr>
+                            <th>Severity</th><th>Description</th><th>Line Number</th>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'{' no est&aacute; seguido de espacio en blanco.</td><td>6</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'}' no est&aacute; precedido de espacio en blanco.</td><td>6</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'/' no est&aacute; precedido de espacio en blanco.</td><td>13</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'/' no est&aacute; seguido de espacio en blanco.</td><td>13</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'*' no est&aacute; precedido de espacio en blanco.</td><td>13</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'*' no est&aacute; seguido de espacio en blanco.</td><td>13</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'/' no est&aacute; precedido de espacio en blanco.</td><td>13</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'/' no est&aacute; seguido de espacio en blanco.</td><td>13</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'*' no est&aacute; precedido de espacio en blanco.</td><td>14</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'*' no est&aacute; seguido de espacio en blanco.</td><td>14</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'*' no est&aacute; precedido de espacio en blanco.</td><td>14</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'*' no est&aacute; seguido de espacio en blanco.</td><td>14</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'/' no est&aacute; precedido de espacio en blanco.</td><td>14</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'/' no est&aacute; seguido de espacio en blanco.</td><td>14</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'*' no est&aacute; precedido de espacio en blanco.</td><td>14</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'*' no est&aacute; seguido de espacio en blanco.</td><td>14</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'/' no est&aacute; precedido de espacio en blanco.</td><td>14</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'/' no est&aacute; seguido de espacio en blanco.</td><td>14</td>
+                        </tr>
+                    </table>
+                    <p></p>
+                    <a href="#top">Back to top</a>
+                    <p></p>
+                </div>
+                <div class="file-violation">
+                    <h3>
+                        <a class="link" name="N66148">C:\Users\kevin\Desktop\SantiagoDev\SismoView\sismoview\backend\src\main\java\com\sismoview\domain\models\Arrival.java</a>
+                    </h3>
+                    <table class="violationlist" width="95%">
+                        <tr>
+                            <th>Severity</th><th>Description</th><th>Line Number</th>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'{' no est&aacute; precedido de espacio en blanco.</td><td>8</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'{' no est&aacute; seguido de espacio en blanco.</td><td>8</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'}' no est&aacute; precedido de espacio en blanco.</td><td>8</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'{' no est&aacute; precedido de espacio en blanco.</td><td>13</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'{' no est&aacute; precedido de espacio en blanco.</td><td>14</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'{' no est&aacute; precedido de espacio en blanco.</td><td>15</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'{' no est&aacute; precedido de espacio en blanco.</td><td>17</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'{' no est&aacute; precedido de espacio en blanco.</td><td>18</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'{' no est&aacute; precedido de espacio en blanco.</td><td>19</td>
+                        </tr>
+                    </table>
+                    <p></p>
+                    <a href="#top">Back to top</a>
+                    <p></p>
+                </div>
+                <div class="file-violation">
+                    <h3>
+                        <a class="link" name="N66215">C:\Users\kevin\Desktop\SantiagoDev\SismoView\sismoview\backend\src\main\java\com\sismoview\domain\models\City.java</a>
+                    </h3>
+                    <table class="violationlist" width="95%">
+                        <tr>
+                            <th>Severity</th><th>Description</th><th>Line Number</th>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'{' no est&aacute; precedido de espacio en blanco.</td><td>8</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'{' no est&aacute; seguido de espacio en blanco.</td><td>8</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'}' no est&aacute; precedido de espacio en blanco.</td><td>8</td>
+                        </tr>
+                    </table>
+                    <p></p>
+                    <a href="#top">Back to top</a>
+                    <p></p>
+                </div>
+                <div class="file-violation">
+                    <h3>
+                        <a class="link" name="N66240">C:\Users\kevin\Desktop\SantiagoDev\SismoView\sismoview\backend\src\main\java\com\sismoview\domain\models\IntensityResult.java</a>
+                    </h3>
+                    <table class="violationlist" width="95%">
+                        <tr>
+                            <th>Severity</th><th>Description</th><th>Line Number</th>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'{' no est&aacute; precedido de espacio en blanco.</td><td>9</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'{' no est&aacute; seguido de espacio en blanco.</td><td>9</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'}' no est&aacute; precedido de espacio en blanco.</td><td>9</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'{' no est&aacute; precedido de espacio en blanco.</td><td>10</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'{' no est&aacute; precedido de espacio en blanco.</td><td>14</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'{' no est&aacute; precedido de espacio en blanco.</td><td>15</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'{' no est&aacute; precedido de espacio en blanco.</td><td>17</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'{' no est&aacute; precedido de espacio en blanco.</td><td>18</td>
+                        </tr>
+                    </table>
+                    <p></p>
+                    <a href="#top">Back to top</a>
+                    <p></p>
+                </div>
+                <div class="file-violation">
+                    <h3>
+                        <a class="link" name="N66300">C:\Users\kevin\Desktop\SantiagoDev\SismoView\sismoview\backend\src\main\java\com\sismoview\domain\models\LegendItem.java</a>
+                    </h3>
+                    <table class="violationlist" width="95%">
+                        <tr>
+                            <th>Severity</th><th>Description</th><th>Line Number</th>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'{' no est&aacute; precedido de espacio en blanco.</td><td>7</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'{' no est&aacute; seguido de espacio en blanco.</td><td>7</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'}' no est&aacute; precedido de espacio en blanco.</td><td>7</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'{' no est&aacute; precedido de espacio en blanco.</td><td>8</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'{' no est&aacute; precedido de espacio en blanco.</td><td>10</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'{' no est&aacute; precedido de espacio en blanco.</td><td>11</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'{' no est&aacute; precedido de espacio en blanco.</td><td>13</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'=' no est&aacute; precedido de espacio en blanco.</td><td>13</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'=' no est&aacute; seguido de espacio en blanco.</td><td>13</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'{' no est&aacute; precedido de espacio en blanco.</td><td>14</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'=' no est&aacute; precedido de espacio en blanco.</td><td>14</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'=' no est&aacute; seguido de espacio en blanco.</td><td>14</td>
+                        </tr>
+                    </table>
+                    <p></p>
+                    <a href="#top">Back to top</a>
+                    <p></p>
+                </div>
+                <div class="file-violation">
+                    <h3>
+                        <a class="link" name="N66388">C:\Users\kevin\Desktop\SantiagoDev\SismoView\sismoview\backend\src\main\java\com\sismoview\domain\models\Quake.java</a>
+                    </h3>
+                    <table class="violationlist" width="95%">
+                        <tr>
+                            <th>Severity</th><th>Description</th><th>Line Number</th>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'{' no est&aacute; precedido de espacio en blanco.</td><td>12</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'{' no est&aacute; seguido de espacio en blanco.</td><td>12</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'}' no est&aacute; precedido de espacio en blanco.</td><td>12</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'{' no est&aacute; precedido de espacio en blanco.</td><td>14</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'=' no est&aacute; precedido de espacio en blanco.</td><td>15</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'=' no est&aacute; seguido de espacio en blanco.</td><td>15</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'=' no est&aacute; precedido de espacio en blanco.</td><td>15</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'=' no est&aacute; seguido de espacio en blanco.</td><td>15</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'=' no est&aacute; precedido de espacio en blanco.</td><td>15</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'=' no est&aacute; seguido de espacio en blanco.</td><td>15</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'=' no est&aacute; precedido de espacio en blanco.</td><td>15</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'=' no est&aacute; seguido de espacio en blanco.</td><td>15</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'=' no est&aacute; precedido de espacio en blanco.</td><td>15</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'=' no est&aacute; seguido de espacio en blanco.</td><td>15</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'=' no est&aacute; precedido de espacio en blanco.</td><td>15</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'=' no est&aacute; seguido de espacio en blanco.</td><td>15</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'=' no est&aacute; precedido de espacio en blanco.</td><td>15</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'=' no est&aacute; seguido de espacio en blanco.</td><td>15</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'{' no est&aacute; precedido de espacio en blanco.</td><td>18</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'{' no est&aacute; precedido de espacio en blanco.</td><td>19</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'{' no est&aacute; precedido de espacio en blanco.</td><td>20</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'{' no est&aacute; precedido de espacio en blanco.</td><td>21</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'{' no est&aacute; precedido de espacio en blanco.</td><td>22</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'{' no est&aacute; precedido de espacio en blanco.</td><td>23</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'{' no est&aacute; precedido de espacio en blanco.</td><td>24</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'{' no est&aacute; precedido de espacio en blanco.</td><td>26</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'=' no est&aacute; precedido de espacio en blanco.</td><td>26</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'=' no est&aacute; seguido de espacio en blanco.</td><td>26</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'{' no est&aacute; precedido de espacio en blanco.</td><td>27</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'=' no est&aacute; precedido de espacio en blanco.</td><td>27</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'=' no est&aacute; seguido de espacio en blanco.</td><td>27</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'{' no est&aacute; precedido de espacio en blanco.</td><td>28</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'=' no est&aacute; precedido de espacio en blanco.</td><td>28</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'=' no est&aacute; seguido de espacio en blanco.</td><td>28</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'{' no est&aacute; precedido de espacio en blanco.</td><td>29</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'=' no est&aacute; precedido de espacio en blanco.</td><td>29</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'=' no est&aacute; seguido de espacio en blanco.</td><td>29</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'{' no est&aacute; precedido de espacio en blanco.</td><td>30</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'=' no est&aacute; precedido de espacio en blanco.</td><td>30</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'=' no est&aacute; seguido de espacio en blanco.</td><td>30</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'{' no est&aacute; precedido de espacio en blanco.</td><td>31</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'=' no est&aacute; precedido de espacio en blanco.</td><td>31</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'=' no est&aacute; seguido de espacio en blanco.</td><td>31</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'{' no est&aacute; precedido de espacio en blanco.</td><td>32</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'=' no est&aacute; precedido de espacio en blanco.</td><td>32</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'=' no est&aacute; seguido de espacio en blanco.</td><td>32</td>
+                        </tr>
+                    </table>
+                    <p></p>
+                    <a href="#top">Back to top</a>
+                    <p></p>
+                </div>
+                <div class="file-violation">
+                    <h3>
+                        <a class="link" name="N66714">C:\Users\kevin\Desktop\SantiagoDev\SismoView\sismoview\backend\src\main\java\com\sismoview\domain\models\RingSegment.java</a>
+                    </h3>
+                    <table class="violationlist" width="95%">
+                        <tr>
+                            <th>Severity</th><th>Description</th><th>Line Number</th>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'{' no est&aacute; seguido de espacio en blanco.</td><td>8</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'}' no est&aacute; precedido de espacio en blanco.</td><td>8</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'{' no est&aacute; precedido de espacio en blanco.</td><td>9</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'{' no est&aacute; precedido de espacio en blanco.</td><td>13</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'{' no est&aacute; precedido de espacio en blanco.</td><td>14</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'{' no est&aacute; precedido de espacio en blanco.</td><td>15</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'{' no est&aacute; precedido de espacio en blanco.</td><td>17</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'{' no est&aacute; precedido de espacio en blanco.</td><td>18</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'{' no est&aacute; precedido de espacio en blanco.</td><td>19</td>
+                        </tr>
+                    </table>
+                    <p></p>
+                    <a href="#top">Back to top</a>
+                    <p></p>
+                </div>
+                <div class="file-violation">
+                    <h3>
+                        <a class="link" name="N66781">C:\Users\kevin\Desktop\SantiagoDev\SismoView\sismoview\backend\src\main\java\com\sismoview\domain\models\TsunamiResult.java</a>
+                    </h3>
+                    <table class="violationlist" width="95%">
+                        <tr>
+                            <th>Severity</th><th>Description</th><th>Line Number</th>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'{' no est&aacute; precedido de espacio en blanco.</td><td>10</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'{' no est&aacute; seguido de espacio en blanco.</td><td>10</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'}' no est&aacute; precedido de espacio en blanco.</td><td>10</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'{' no est&aacute; precedido de espacio en blanco.</td><td>17</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'{' no est&aacute; precedido de espacio en blanco.</td><td>18</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'{' no est&aacute; precedido de espacio en blanco.</td><td>19</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'{' no est&aacute; precedido de espacio en blanco.</td><td>21</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'=' no est&aacute; precedido de espacio en blanco.</td><td>21</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'=' no est&aacute; seguido de espacio en blanco.</td><td>21</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'{' no est&aacute; precedido de espacio en blanco.</td><td>22</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'=' no est&aacute; precedido de espacio en blanco.</td><td>22</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'=' no est&aacute; seguido de espacio en blanco.</td><td>22</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'{' no est&aacute; precedido de espacio en blanco.</td><td>23</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'=' no est&aacute; precedido de espacio en blanco.</td><td>23</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'=' no est&aacute; seguido de espacio en blanco.</td><td>23</td>
+                        </tr>
+                    </table>
+                    <p></p>
+                    <a href="#top">Back to top</a>
+                    <p></p>
+                </div>
+                
+                <div class="file-violation">
+                    <h3>
+                        <a class="link" name="N66898">C:\Users\kevin\Desktop\SantiagoDev\SismoView\sismoview\backend\src\main\java\com\sismoview\service\SeismicService.java</a>
+                    </h3>
+                    <table class="violationlist" width="95%">
+                        <tr>
+                            <th>Severity</th><th>Description</th><th>Line Number</th>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'{' no est&aacute; precedido de espacio en blanco.</td><td>25</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'for' no est&aacute; seguido de espacio en blanco.</td><td>27</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'for' no est&aacute; seguido de espacio en blanco.</td><td>27</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'{' no est&aacute; precedido de espacio en blanco.</td><td>27</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'{' no est&aacute; precedido de espacio en blanco.</td><td>37</td>
+                        </tr>
+                    </table>
+                    <p></p>
+                    <a href="#top">Back to top</a>
+                    <p></p>
+                </div>
+                <div class="file-violation">
+                    <h3>
+                        <a class="link" name="N66937">C:\Users\kevin\Desktop\SantiagoDev\SismoView\sismoview\backend\src\main\java\com\sismoview\service\TsunamiService.java</a>
+                    </h3>
+                    <table class="violationlist" width="95%">
+                        <tr>
+                            <th>Severity</th><th>Description</th><th>Line Number</th>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'{' no est&aacute; precedido de espacio en blanco.</td><td>14</td>
+                        </tr>
+                        <tr>
+                            <td>error</td><td>'{' no est&aacute; precedido de espacio en blanco.</td><td>18</td>
+                        </tr>
+                    </table>
+                    <p></p>
+                    <a href="#top">Back to top</a>
+                    <p></p>
+                </div>
+                
+                <p></p>
+            </p>
+        </div>
+        <hr align="left" width="95%" size="1">
+        <p>
+            Generated by <a href="https://gradle.org">Gradle 8.9</a> with <a href="https://checkstyle.sourceforge.io/">Checkstyle 10.12.4</a>.
+        </p>
+    </body>
+</html>
