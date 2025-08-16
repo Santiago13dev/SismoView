@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>SismoView – Demo Canvas</title>
+<style>
+  html,body{height:100%;margin:0;background:#001018;color:#e8f1f5;font-family:system-ui,Segoe UI,Roboto,Inter,Arial}
+  header{position:fixed;inset:0 0 auto 0;display:flex;gap:.5rem;align-items:center;padding:.5rem .75rem;background:linear-gradient(180deg,rgba(0,0,0,.55),rgba(0,0,0,.15));z-index:3}
+  .wrap{position:absolute;inset:60px 0 0 0}
+  canvas{display:block;width:100%;height:100%}
+  select,button{background:#0e1b22;color:#e8f1f5;border:1px solid #1f343e;border-radius:.5rem;padding:.45rem .6rem}
+</style>
+</head>
+<body>
+<header>
+<select id="event"></select><button id="play">Simular</button>
+</header>
+<div class="wrap"><canvas id="cv"></canvas></div>
+<script>
+const cv=document.getElementById('cv'), ctx=cv.getContext('2d');
+const R=0.45, PI=Math.PI;
+let yaw=0,pitch=0,drag=false,px=0,py=0;
+let current=null,start=0,run=false;
+
+function resize(){const p=cv.parentElement;cv.width=p.clientWidth;cv.height=p.clientHeight;}
+window.addEventListener('resize',resize);
+
+function sph(lat,lon){const f=lat*Math.PI/180,l=lon*Math.PI/180;return{x:Math.cos(f)*Math.cos(l),y:Math.sin(f),z:Math.cos(f)*Math.sin(l)}}
+function rot(v){const cy=Math.cos(yaw),sy=Math.sin(yaw),cp=Math.cos(pitch),sp=Math.sin(pitch);let x=v.x*cy+v.z*sy;let z=-v.x*sy+v.z*cy;let y=v.y*cp - z*sp;z=v.y*sp + z*cp;return{x,y,z}}
+function proj(v){const s=Math.min(cv.width,cv.height)*R;return{x:cv.width/2+v.x*s,y:cv.height/2-v.y*s}}
+
+function ring(lat,lon,ang,col){ctx.beginPath();let started=false;for(let i=0;i<=240;i++){const t=2*PI*(i/240),st=Math.sin(t),ct=Math.cos(t);const f1=lat*PI/180, l1=lon*PI/180;const s1=Math.sin(f1),c1=Math.cos(f1),sd=Math.sin(ang),cd=Math.cos(ang);const s2=s1*cd+c1*sd*ct;const f2=Math.asin(s2);const y=st*sd*c1;const x=cd-s1*s2;const l2=l1+Math.atan2(y,x);let v=rot(sph(f2*180/PI,l2*180/PI));if(v.z<=0){started=false;continue;}const p=proj(v);if(!started){ctx.moveTo(p.x,p.y);started=true;}else{ctx.lineTo(p.x,p.y);}}ctx.strokeStyle=col;ctx.lineWidth=2;ctx.stroke();}
+
+cv.addEventListener('mousedown',e=>{drag=true;px=e.clientX;py=e.clientY;});
+window.addEventListener('mouseup',()=>drag=false);
+window.addEventListener('mousemove',e=>{if(!drag)return;const dx=e.clientX-px,dy=e.clientY-py;px=e.clientX;py=e.clientY;yaw+=dx*0.005;pitch+=dy*0.005;});
+
+function draw(){ctx.clearRect(0,0,cv.width,cv.height);ctx.save();ctx.translate(cv.width/2,cv.height/2);ctx.beginPath();ctx.arc(0,0,Math.min(cv.width,cv.height)*R,0,2*PI);ctx.fillStyle='#0b0b0b';ctx.fill();ctx.restore();
+ if(current){const t=(performance.now()-start)/1000;const aP=(360*t)/6371;const aS=(210*t)/6371; ring(current.lat,current.lon,aP,'#26c6da'); ring(current.lat,current.lon,aS,'#ff6b81'); }
+ requestAnimationFrame(draw);
+}
+function main(){resize();draw(); const select=document.getElementById('event'); const offline=[{mag:6.3,place:'Lata, Islas Salomón',lat:-10.9,lon:166.3},{mag:7.0,place:'Costa de Chile',lat:-31.6,lon:-71.5},{mag:6.8,place:'Honshu, Japón',lat:38,lon:142.4}]; offline.forEach((e,i)=>{const o=document.createElement('option');o.value=String(i);o.textContent=`M${e.mag} – ${e.place}`; select.appendChild(o);}); select.value='0'; current=offline[0]; start=performance.now(); run=true;
+ document.getElementById('play').onclick=()=>{const arr=offline; const i=parseInt(select.value,10); current=arr[i]; start=performance.now(); run=true;};
+}
+window.addEventListener('load', main);
+</script>
+</body>
+</html>
