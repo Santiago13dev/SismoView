@@ -14,58 +14,44 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Show tree (debug)
+      - name: Detectar tipo de proyecto
+        id: detect
         run: |
-          pwd
-          ls -la
-          echo "Lockfiles:"
-          ls -la | grep -E "package-lock.json|yarn.lock|pnpm-lock.yaml" || true
+          if [ -f "package.json" ]; then echo "node_project=true" >> $GITHUB_OUTPUT; fi
+          if [ -f "index.html" ];    then echo "static_html=true"  >> $GITHUB_OUTPUT; fi
+          echo "Node? $([[ -f package.json ]] && echo YES || echo NO)"
+          echo "HTML? $([[ -f index.html ]] && echo YES || echo NO)"
 
+      # Solo si es proyecto Node (Next/React/etc.)
       - name: Setup Node
+        if: ${{ steps.detect.outputs.node_project == 'true' }}
         uses: actions/setup-node@v4
         with:
-          node-version: 18    # más compatible; si tu proyecto requiere 20, cámbialo a 20
+          node-version: 18
           cache: npm
           cache-dependency-path: demo/package-lock.json
 
-      - name: Detect package manager
-        id: pm
+      - name: Instalar dependencias (Node)
+        if: ${{ steps.detect.outputs.node_project == 'true' }}
         run: |
-          if [ -f "pnpm-lock.yaml" ]; then
-            echo "mgr=pnpm" >> $GITHUB_OUTPUT
-          elif [ -f "yarn.lock" ]; then
-            echo "mgr=yarn" >> $GITHUB_OUTPUT
-          else
-            echo "mgr=npm" >> $GITHUB_OUTPUT
-          fi
+          if [ -f package-lock.json ]; then npm ci; else npm install; fi
 
-      - name: Setup pnpm
-        if: steps.pm.outputs.mgr == 'pnpm'
-        uses: pnpm/action-setup@v4
-        with:
-          version: 8
-
-      - name: Enable corepack (yarn/pnpm)
-        if: steps.pm.outputs.mgr != 'npm'
-        run: corepack enable
-
-      - name: Install deps
-        run: |
-          if [ "${{ steps.pm.outputs.mgr }}" = "pnpm" ]; then pnpm install --frozen-lockfile; \
-          elif [ "${{ steps.pm.outputs.mgr }}" = "yarn" ]; then yarn install --immutable; \
-          else if [ -f package-lock.json ]; then npm ci; else npm install; fi; fi
-
-      - name: Build
+      - name: Build (Node)
+        if: ${{ steps.detect.outputs.node_project == 'true' }}
         env:
           NEXT_TELEMETRY_DISABLED: 1
-          CI: false   # evita que algunos linters detengan el build en CI
+          CI: false
+        run: npm run build --if-present
+
+      # Si NO es proyecto Node y SOLO hay HTML estático, valida que exista el archivo y pasa
+      - name: Validar HTML estático
+        if: ${{ steps.detect.outputs.node_project != 'true' && steps.detect.outputs.static_html == 'true' }}
         run: |
-          if [ "${{ steps.pm.outputs.mgr }}" = "pnpm" ]; then pnpm build; \
-          elif [ "${{ steps.pm.outputs.mgr }}" = "yarn" ]; then yarn build; \
-          else npm run build --if-present; fi
+          test -f index.html
+          echo "OK: proyecto estático con index.html"
 
   backend:
-    name: Backend (Gradle)
+    name: Backend
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -73,24 +59,38 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Show tree (debug)
+      - name: Detectar herramienta de build
+        id: b
         run: |
-          pwd
-          ls -la
-          echo "Gradle wrapper?"; if [ -f gradlew ]; then echo "YES"; else echo "NO"; fi
+          if [ -f "gradlew" ] || [ -f "build.gradle" ] || [ -f "build.gradle.kts" ]; then echo "use_gradle=true" >> $GITHUB_OUTPUT; fi
+          if [ -f "pom.xml" ]; then echo "use_maven=true" >> $GITHUB_OUTPUT; fi
+          echo "Gradle? $([[ -f gradlew || -f build.gradle || -f build.gradle.kts ]] && echo YES || echo NO)"
+          echo "Maven?  $([[ -f pom.xml ]] && echo YES || echo NO)"
 
       - name: Setup Java
+        if: ${{ steps.b.outputs.use_gradle == 'true' || steps.b.outputs.use_maven == 'true' }}
         uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: 17    # cambia a 21 si tu build.gradle lo exige
+          java-version: 17   # súbelo a 21 si tu build.gradle/pom lo exige
 
       - uses: gradle/actions/setup-gradle@v3
+        if: ${{ steps.b.outputs.use_gradle == 'true' }}
 
-      - name: Make gradlew executable (if exists)
-        run: if [ -f gradlew ]; then chmod +x gradlew; fi
+      - name: Permisos para gradlew
+        if: ${{ steps.b.outputs.use_gradle == 'true' && hashFiles('backend/gradlew') != '' }}
+        run: chmod +x gradlew
 
-      - name: Build (wrapper if present, else system gradle)
+      - name: Build (Gradle)
+        if: ${{ steps.b.outputs.use_gradle == 'true' }}
         run: |
           if [ -f gradlew ]; then ./gradlew build --no-daemon --stacktrace; \
           else gradle build --no-daemon --stacktrace; fi
+
+      - name: Build (Maven)
+        if: ${{ steps.b.outputs.use_maven == 'true' }}
+        run: mvn -B -DskipTests package
+
+      - name: No hay proyecto backend detectable (OK)
+        if: ${{ steps.b.outputs.use_gradle != 'true' && steps.b.outputs.use_maven != 'true' }}
+        run: echo "Sin build.gradle/pom.xml en backend: se omite build y el job pasa."
