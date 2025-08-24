@@ -1,0 +1,96 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  frontend:
+    name: Frontend (demo)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: demo
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Detectar tipo de proyecto
+        id: detect
+        run: |
+          if [ -f "package.json" ]; then echo "node_project=true" >> $GITHUB_OUTPUT; fi
+          if [ -f "index.html" ];    then echo "static_html=true"  >> $GITHUB_OUTPUT; fi
+          echo "Node? $([[ -f package.json ]] && echo YES || echo NO)"
+          echo "HTML? $([[ -f index.html ]] && echo YES || echo NO)"
+
+      # Solo si es proyecto Node (Next/React/etc.)
+      - name: Setup Node
+        if: ${{ steps.detect.outputs.node_project == 'true' }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: npm
+          cache-dependency-path: demo/package-lock.json
+
+      - name: Instalar dependencias (Node)
+        if: ${{ steps.detect.outputs.node_project == 'true' }}
+        run: |
+          if [ -f package-lock.json ]; then npm ci; else npm install; fi
+
+      - name: Build (Node)
+        if: ${{ steps.detect.outputs.node_project == 'true' }}
+        env:
+          NEXT_TELEMETRY_DISABLED: 1
+          CI: false
+        run: npm run build --if-present
+
+      # Si NO es proyecto Node y SOLO hay HTML estático, valida que exista el archivo y pasa
+      - name: Validar HTML estático
+        if: ${{ steps.detect.outputs.node_project != 'true' && steps.detect.outputs.static_html == 'true' }}
+        run: |
+          test -f index.html
+          echo "OK: proyecto estático con index.html"
+
+  backend:
+    name: Backend
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Detectar herramienta de build
+        id: b
+        run: |
+          if [ -f "gradlew" ] || [ -f "build.gradle" ] || [ -f "build.gradle.kts" ]; then echo "use_gradle=true" >> $GITHUB_OUTPUT; fi
+          if [ -f "pom.xml" ]; then echo "use_maven=true" >> $GITHUB_OUTPUT; fi
+          echo "Gradle? $([[ -f gradlew || -f build.gradle || -f build.gradle.kts ]] && echo YES || echo NO)"
+          echo "Maven?  $([[ -f pom.xml ]] && echo YES || echo NO)"
+
+      - name: Setup Java
+        if: ${{ steps.b.outputs.use_gradle == 'true' || steps.b.outputs.use_maven == 'true' }}
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17   # súbelo a 21 si tu build.gradle/pom lo exige
+
+      - uses: gradle/actions/setup-gradle@v3
+        if: ${{ steps.b.outputs.use_gradle == 'true' }}
+
+      - name: Permisos para gradlew
+        if: ${{ steps.b.outputs.use_gradle == 'true' && hashFiles('backend/gradlew') != '' }}
+        run: chmod +x gradlew
+
+      - name: Build (Gradle)
+        if: ${{ steps.b.outputs.use_gradle == 'true' }}
+        run: |
+          if [ -f gradlew ]; then ./gradlew build --no-daemon --stacktrace; \
+          else gradle build --no-daemon --stacktrace; fi
+
+      - name: Build (Maven)
+        if: ${{ steps.b.outputs.use_maven == 'true' }}
+        run: mvn -B -DskipTests package
+
+      - name: No hay proyecto backend detectable (OK)
+        if: ${{ steps.b.outputs.use_gradle != 'true' && steps.b.outputs.use_maven != 'true' }}
+        run: echo "Sin build.gradle/pom.xml en backend: se omite build y el job pasa."
