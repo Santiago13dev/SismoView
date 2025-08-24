@@ -15,3 +15,9 @@ backend/logs/
 # General
 *.log
 .env
+
+# Node/Next (por tu frontend)
+node_modules/
+.next/
+dist/
+out/
