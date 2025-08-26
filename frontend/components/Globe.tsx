@@ -1,6 +1,7 @@
 "use client";
+
 import * as THREE from "three";
-import { Canvas, useFrame, useThree } from "@react-three/fiber";
+import { Canvas, useFrame } from "@react-three/fiber";
 import { OrbitControls, Stars, useTexture } from "@react-three/drei";
 import { useMemo, useRef } from "react";
 
@@ -8,10 +9,7 @@ import { useMemo, useRef } from "react";
 export type Center = { lat: number; lon: number };
 export type RingSet = { p?: number[]; s?: number[] }; // kilómetros (puede venir vacío)
 
-type GlobeProps = {
-  center: Center;
-  rings?: RingSet | null;
-};
+type GlobeProps = { center?: Center | null; rings?: RingSet | null };
 
 /* ------------------------- utilidades geo ------------------------- */
 const d2r = (d: number) => (d * Math.PI) / 180;
@@ -50,8 +48,7 @@ function destinationPoint(lat: number, lon: number, bearingDeg: number, angDistR
 /* --------------------------- materiales -------------------------- */
 
 function Atmosphere() {
-  // shader muy simple de “rim light” para la atmósfera
-  const materialRef = useRef<THREE.ShaderMaterial>(null!);
+  // shader muy simple de “rim light”
   const vertexShader = /* glsl */ `
     varying vec3 vNormal;
     void main() {
@@ -70,7 +67,6 @@ function Atmosphere() {
     <mesh scale={1.018}>
       <sphereGeometry args={[1, 64, 64]} />
       <shaderMaterial
-        ref={materialRef}
         vertexShader={vertexShader}
         fragmentShader={fragmentShader}
         blending={THREE.AdditiveBlending}
@@ -87,21 +83,18 @@ function Graticule({ color = "#2dd4bf", alpha = 0.25 }) {
   const lines = useMemo(() => {
     const group: JSX.Element[] = [];
     const mat = new THREE.LineBasicMaterial({ color, transparent: true, opacity: alpha });
+
     // paralelos cada 30°
     for (let lat = -60; lat <= 60; lat += 30) {
       const pts: THREE.Vector3[] = [];
-      for (let lon = -180; lon <= 180; lon += 3) {
-        pts.push(latLonToVector3(1.001, lat, lon));
-      }
+      for (let lon = -180; lon <= 180; lon += 3) pts.push(latLonToVector3(1.001, lat, lon));
       const geo = new THREE.BufferGeometry().setFromPoints(pts);
       group.push(<line key={`par-${lat}`} geometry={geo} material={mat} />);
     }
     // meridianos cada 30°
     for (let lon = -150; lon <= 180; lon += 30) {
       const pts: THREE.Vector3[] = [];
-      for (let lat = -90; lat <= 90; lat += 3) {
-        pts.push(latLonToVector3(1.001, lat, lon));
-      }
+      for (let lat = -90; lat <= 90; lat += 3) pts.push(latLonToVector3(1.001, lat, lon));
       const geo = new THREE.BufferGeometry().setFromPoints(pts);
       group.push(<line key={`mer-${lon}`} geometry={geo} material={mat} />);
     }
@@ -143,7 +136,7 @@ function Stand() {
 /* ----------------------------- Tierra ----------------------------- */
 
 function EarthBall() {
-  // Carga de texturas (las opcionales no son obligatorias)
+  // Carga de texturas desde /public/textures
   const [colorMap, normalMap, specMap] = useTexture(
     [
       "/textures/earth_political_4k.jpg",
@@ -153,17 +146,18 @@ function EarthBall() {
     (txs) => txs.forEach((t) => (t.anisotropy = 8))
   );
 
+  // El mapa "specular" es para Phong, no para Standard.
+  const hasNormal = (normalMap as any)?.image;
+  const hasSpec = (specMap as any)?.image;
+
   return (
     <mesh>
       <sphereGeometry args={[1, 128, 128]} />
-      <meshStandardMaterial
-        map={colorMap}
-        normalMap={(normalMap as any)?.image ? (normalMap as THREE.Texture) : undefined}
-        metalnessMap={(specMap as any)?.image ? (specMap as THREE.Texture) : undefined}
-        roughnessMap={(specMap as any)?.image ? (specMap as THREE.Texture) : undefined}
-        metalness={0.1}
-        roughness={0.9}
-        envMapIntensity={0.7}
+      <meshPhongMaterial
+        map={colorMap as THREE.Texture}
+        normalMap={hasNormal ? (normalMap as THREE.Texture) : undefined}
+        specularMap={hasSpec ? (specMap as THREE.Texture) : undefined}
+        shininess={12}
       />
     </mesh>
   );
@@ -210,41 +204,46 @@ function RingCircle({
   const geo = useMemo(() => new THREE.BufferGeometry().setFromPoints(points), [points]);
   return (
     <line geometry={geo}>
-      <lineBasicMaterial color={color} linewidth={2} />
+      <lineBasicMaterial color={color} />
     </line>
   );
 }
 
-/* ---------------------------- Controls ---------------------------- */
+/* ------------------- World: vive DENTRO del Canvas ------------------- */
 
-function Controls() {
-  const { camera } = useThree();
-  // ligera inclinación estilo “eje terrestre”
-  const group = useRef<THREE.Group>(null!);
-  useFrame(() => {
-    if (!group.current) return;
-    group.current.rotation.z = d2r(23.4);
+function World({ center, rings }: { center: Center; rings?: RingSet | null }) {
+  const worldRef = useRef<THREE.Group>(null!);
+
+  // Animación: tilt + rotación suave
+  useFrame((_, delta) => {
+    if (!worldRef.current) return;
+    worldRef.current.rotation.z = d2r(23.4);
+    worldRef.current.rotation.y += delta * 0.05;
   });
+
   return (
-    <>
-      <group ref={group} />
-      <OrbitControls
-        enableDamping
-        dampingFactor={0.08}
-        minDistance={1.6}
-        maxDistance={6}
-        rotateSpeed={0.8}
-        zoomSpeed={0.9}
-        enablePan={false}
-        target={[0, 0, 0]}
-      />
-    </>
+    <group ref={worldRef}>
+      <EarthBall />
+      <Atmosphere />
+      <Graticule />
+      <EquatorNeon />
+      <Pin lat={center.lat} lon={center.lon} />
+      {rings?.p?.map((r, i) => (
+        <RingCircle key={`p-${i}`} center={center} radiusKm={r} color="#7cf9f1" />
+      ))}
+      {rings?.s?.map((r, i) => (
+        <RingCircle key={`s-${i}`} center={center} radiusKm={r} color="#ff8ec9" />
+      ))}
+    </group>
   );
 }
 
 /* ============================ GLOBE ============================ */
 
 export default function Globe({ center, rings }: GlobeProps) {
+  // 🔒 Si aún no hay center (hidratación/primer render), no dibujes nada
+  if (!center) return null;
+
   return (
     <Canvas
       camera={{ position: [0, 0, 3.1], fov: 42 }}
@@ -258,28 +257,24 @@ export default function Globe({ center, rings }: GlobeProps) {
       <pointLight position={[-4, -3, -4]} intensity={0.5} />
 
       {/* Estrellas sutiles */}
-      <Stars radius={80} depth={35} count={2000} factor={2} fade speed={0.2} />
+      <Stars radius={80} depth={35} count={1600} factor={2} fade speed={0.2} />
 
-      {/* Globo */}
-      <group>
-        <EarthBall />
-        <Atmosphere />
-        <Graticule />
-        <EquatorNeon />
-        <Pin lat={center.lat} lon={center.lon} />
-        {/* Anillos P/S si existen */}
-        {rings?.p?.map((r, i) => (
-          <RingCircle key={`p-${i}`} center={center} radiusKm={r} color="#7cf9f1" />
-        ))}
-        {rings?.s?.map((r, i) => (
-          <RingCircle key={`s-${i}`} center={center} radiusKm={r} color="#ff8ec9" />
-        ))}
-      </group>
+      {/* Globo + elementos */}
+      <World center={center} rings={rings} />
 
       {/* Soporte / base (decorativo) */}
       <Stand />
 
-      <Controls />
+      <OrbitControls
+        enableDamping
+        dampingFactor={0.08}
+        minDistance={1.6}
+        maxDistance={6}
+        rotateSpeed={0.8}
+        zoomSpeed={0.9}
+        enablePan={false}
+        target={[0, 0, 0]}
+      />
     </Canvas>
   );
 }
