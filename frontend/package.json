@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "format": "prettier --write \"**/*.{ts,tsx,js,css,md,json}\""
   },
   "dependencies": {
     "@react-three/drei": "9.122.0",

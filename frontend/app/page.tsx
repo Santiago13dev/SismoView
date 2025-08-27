@@ -164,7 +164,7 @@ export default function Home() {
       <div className="max-w-6xl mx-auto p-4 grid grid-cols-1 lg:grid-cols-3 gap-4">
         <section className="lg:col-span-2">
           <div className="relative h-[60vh] rounded-xl border border-slate-800 overflow-hidden bg-black">
-            {/* Si faltan texturas, avisamos cómo resolver */}
+            {/* Si faltan texturas, aviso de cómo resolver */}
             {texOk === false && (
               <div className="absolute inset-0 grid place-items-center text-center p-6">
                 <div>
@@ -186,7 +186,7 @@ export default function Home() {
               </div>
             )}
 
-            {/* Montamos el globo solo si las texturas existen */}
+            {/* se  monta el globo solo si las texturas existen */}
             {texOk && (
               <Globe
                 key={center ? `${center.lat},${center.lon}` : "no-center"}
