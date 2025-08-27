@@ -5,13 +5,13 @@ import { Canvas, useFrame } from "@react-three/fiber";
 import { OrbitControls, Stars, useTexture } from "@react-three/drei";
 import { useMemo, useRef } from "react";
 
-/** Props mínimas que ya usabas */
+
 export type Center = { lat: number; lon: number };
 export type RingSet = { p?: number[]; s?: number[] }; // kilómetros (puede venir vacío)
 
 type GlobeProps = { center?: Center | null; rings?: RingSet | null };
 
-/* ------------------------- utilidades geo ------------------------- */
+/* ----------- utilidades geo ---------- */
 const d2r = (d: number) => (d * Math.PI) / 180;
 const r2d = (r: number) => (r * 180) / Math.PI;
 const EARTH_R_KM = 6371;
@@ -26,7 +26,7 @@ function latLonToVector3(R: number, lat: number, lon: number) {
   return new THREE.Vector3(x, y, z);
 }
 
-// punto destino a un azimut y distancia angular (geodesia simple)
+// punto destino a un azimut y distancia angular 
 function destinationPoint(lat: number, lon: number, bearingDeg: number, angDistRad: number) {
   const φ1 = d2r(lat);
   const λ1 = d2r(lon);
@@ -49,7 +49,7 @@ function destinationPoint(lat: number, lon: number, bearingDeg: number, angDistR
 
 function Atmosphere() {
   // shader muy simple de “rim light”
-  const vertexShader = /* glsl */ `
+  const vertexShader = 
     varying vec3 vNormal;
     void main() {
       vNormal = normalize(normalMatrix * normal);
@@ -60,7 +60,7 @@ function Atmosphere() {
     varying vec3 vNormal;
     void main() {
       float intensity = pow(0.6 - dot(vNormal, vec3(0.0, 0.0, 1.0)), 2.5);
-      gl_FragColor = vec4(0.35, 0.85, 1.0, 1.0) * intensity; // cian
+      gl_FragColor = vec4(0.35, 0.85, 1.0, 1.0) * intensity; 
     }
   `;
   return (
@@ -241,7 +241,7 @@ function World({ center, rings }: { center: Center; rings?: RingSet | null }) {
 /* ============================ GLOBE ============================ */
 
 export default function Globe({ center, rings }: GlobeProps) {
-  // 🔒 Si aún no hay center (hidratación/primer render), no dibujes nada
+  // Si aún no hay center (hidratación/primer render), no dibujes nada
   if (!center) return null;
 
   return (
