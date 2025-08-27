@@ -1,11 +1,15 @@
-/** @type {import('next').NextConfig} */
+// next.config.mjs
+// Mantén el config mínimo, estricto y documentado.
+// Tip: "images.unoptimized" evita warnings si usas <img> o texturas locales sin Image Optimization.
+
 const nextConfig = {
-  reactStrictMode: true,
+  reactStrictMode: true, // Ayuda a detectar efectos/renders indebidos en dev
   experimental: {
-    typedRoutes: true,
+    typedRoutes: true, // Ya lo usabas: asegura rutas tipadas en app router
   },
-  // Si usas <Image> con archivos locales y quieres evitar optimización de Next:
-  // images: { unoptimized: true },
+  images: {
+    unoptimized: true, // No afecta a texturas en /public, pero evita optimización innecesaria
+  },
 };
 
 export default nextConfig;
