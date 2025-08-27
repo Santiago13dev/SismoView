@@ -1,3 +1,4 @@
+//Componente para reflejar mis estadisticas al usuario
 "use client";
 
 type Rings = { P: { minutes: number; radiusKm: number }[]; S: { minutes: number; radiusKm: number }[] };
