@@ -2,6 +2,7 @@
 
 import { useState, useMemo, useEffect } from "react";
 import dynamic from "next/dynamic";
+import Playback from "../components/Playback"; // timeline play/pause/slider
 
 // Carga en cliente
 const Globe = dynamic(() => import("../components/Globe"), { ssr: false });
@@ -27,6 +28,9 @@ export default function Home() {
   const [resp, setResp] = useState<SimResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
 
+  // Timeline (minutos)
+  const [liveT, setLiveT] = useState(0);
+
   // Chequeo de texturas para evitar crash del loader
   const [texOk, setTexOk] = useState<boolean | null>(null);
   useEffect(() => {
@@ -38,7 +42,9 @@ export default function Home() {
           "/textures/earth_normal_2k.jpg",
           "/textures/earth_specular_2k.jpg",
         ];
-        const resps = await Promise.all(urls.map((u) => fetch(u, { method: "HEAD", cache: "no-store" })));
+        const resps = await Promise.all(
+          urls.map((u) => fetch(u, { method: "HEAD", cache: "no-store" }))
+        );
         if (!alive) return;
         setTexOk(resps.every((r) => r.ok));
       } catch {
@@ -59,13 +65,43 @@ export default function Home() {
     return null;
   }, [lat, lon]);
 
-  // Adaptar formato para el globo
+  // Adaptar formato para el globo (solo radios)
   const ringsForGlobe = useMemo(() => {
     const p = resp?.rings?.P?.map((r) => r.radiusKm) ?? [];
     const s = resp?.rings?.S?.map((r) => r.radiusKm) ?? [];
     if (p.length === 0 && s.length === 0) return null;
     return { p, s };
   }, [resp]);
+
+  // Estimar velocidades P/S a partir de los anillos (si existen)
+  const vp = useMemo(() => {
+    const arr = resp?.rings?.P;
+    if (!arr || arr.length === 0) return undefined;
+    const best = [...arr].sort((a, b) => a.minutes - b.minutes)[0];
+    if (!best || best.minutes <= 0) return undefined;
+    return best.radiusKm / (best.minutes * 60); // km/s
+  }, [resp]);
+
+  const vs = useMemo(() => {
+    const arr = resp?.rings?.S;
+    if (!arr || arr.length === 0) return undefined;
+    const best = [...arr].sort((a, b) => a.minutes - b.minutes)[0];
+    if (!best || best.minutes <= 0) return undefined;
+    return best.radiusKm / (best.minutes * 60); // km/s
+  }, [resp]);
+
+  // Tope del timeline (min) según data (fallback 60)
+  const maxTimeline = useMemo(() => {
+    const pMax = Math.max(0, ...(resp?.rings?.P?.map((r) => r.minutes) ?? [0]));
+    const sMax = Math.max(0, ...(resp?.rings?.S?.map((r) => r.minutes) ?? [0]));
+    const m = Math.max(pMax, sMax);
+    return m > 0 ? Math.ceil(m * 1.1) : 60;
+  }, [resp]);
+
+  // Reset del timeline al cambiar simulación
+  useEffect(() => {
+    setLiveT(0);
+  }, [resp?.rings]);
 
   async function simular() {
     setLoading(true);
@@ -188,6 +224,9 @@ export default function Home() {
                 key={center ? `${center.lat},${center.lon}` : "no-center"}
                 center={center}
                 rings={ringsForGlobe}
+                liveMinutes={liveT}
+                liveVpKmS={vp}
+                liveVsKmS={vs}
               />
             )}
 
@@ -212,6 +251,18 @@ export default function Home() {
           )}
           {error && <p className="text-red-400 text-sm mt-3 break-words">Error: {error}</p>}
         </aside>
+
+        {/* Timeline debajo del globo, ocupando las mismas 3 columnas */}
+        <div className="lg:col-span-3">
+          <div className="mt-2">
+            <Playback
+              value={liveT}
+              onChange={setLiveT}
+              max={maxTimeline}
+              disabled={!center || texOk === false}
+            />
+          </div>
+        </div>
       </div>
 
       {/* Debug JSON */}
