@@ -3,6 +3,7 @@
 import { useState, useMemo, useEffect } from "react";
 import dynamic from "next/dynamic";
 
+// Carga en cliente
 const Globe = dynamic(() => import("../components/Globe"), { ssr: false });
 const Stats = dynamic(() => import("../components/Stats"), { ssr: false });
 
@@ -21,11 +22,12 @@ export default function Home() {
   const [lat, setLat] = useState("10.5");
   const [lon, setLon] = useState("166.3");
   const [mag, setMag] = useState("6.3");
+
   const [loading, setLoading] = useState(false);
   const [resp, setResp] = useState<SimResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  // ✅ Chequeo de existencia de texturas para evitar crash del loader
+  // Chequeo de texturas para evitar crash del loader
   const [texOk, setTexOk] = useState<boolean | null>(null);
   useEffect(() => {
     let alive = true;
@@ -36,9 +38,7 @@ export default function Home() {
           "/textures/earth_normal_2k.jpg",
           "/textures/earth_specular_2k.jpg",
         ];
-        const resps = await Promise.all(
-          urls.map((u) => fetch(u, { method: "HEAD", cache: "no-store" }))
-        );
+        const resps = await Promise.all(urls.map((u) => fetch(u, { method: "HEAD", cache: "no-store" })));
         if (!alive) return;
         setTexOk(resps.every((r) => r.ok));
       } catch {
@@ -92,7 +92,7 @@ export default function Home() {
           magnitude: m,
           cities: [
             { name: "Bogotá", lat: 4.711, lon: -74.0721 },
-            { name: "Tokio", lat: 35.6762, lon: 139.6503 },
+            { name: "Tokio",  lat: 35.6762, lon: 139.6503 },
           ],
         }),
       });
@@ -115,35 +115,36 @@ export default function Home() {
   }
 
   return (
-    <main className="min-h-screen bg-slate-900 text-slate-100">
-      <header className="sticky top-0 z-50 bg-slate-900/90 backdrop-blur border-b border-slate-800">
-        <div className="max-w-6xl mx-auto p-4 flex flex-wrap gap-3 items-end">
-          <h1 className="text-xl font-semibold mr-auto">SismoView – MVP</h1>
+    <main className="mx-auto max-w-7xl px-4 py-6">
+      {/* Barra superior: ÚNICO botón Simular */}
+      <div className="card mb-6 p-3 flex flex-wrap items-end gap-3 justify-between">
+        <h1 className="text-lg font-semibold tracking-tight">
+          SismoView <span className="text-cyan-300">MVP</span>
+        </h1>
 
-          <label className="text-sm">
+        <div className="flex flex-wrap items-end gap-2">
+          <label className="text-xs text-slate-300">
             Lat
             <input
-              className="mt-1 block bg-slate-800 px-3 py-2 rounded w-28"
+              className="input mt-1 w-24"
               value={lat}
               onChange={(e) => setLat(e.target.value)}
               inputMode="decimal"
             />
           </label>
-
-          <label className="text-sm">
+          <label className="text-xs text-slate-300">
             Lon
             <input
-              className="mt-1 block bg-slate-800 px-3 py-2 rounded w-28"
+              className="input mt-1 w-24"
               value={lon}
               onChange={(e) => setLon(e.target.value)}
               inputMode="decimal"
             />
           </label>
-
-          <label className="text-sm">
+          <label className="text-xs text-slate-300">
             M
             <input
-              className="mt-1 block bg-slate-800 px-3 py-2 rounded w-24"
+              className="input mt-1 w-20"
               value={mag}
               onChange={(e) => setMag(e.target.value)}
               inputMode="decimal"
@@ -151,20 +152,21 @@ export default function Home() {
           </label>
 
           <button
-            type="button"
+            className="btn-primary"
             onClick={simular}
-            disabled={loading}
-            className="bg-teal-500 hover:bg-teal-400 disabled:opacity-60 text-black font-semibold px-4 py-2 rounded"
+            disabled={loading || !center || texOk === false}
           >
             {loading ? "Simulando..." : "Simular"}
           </button>
         </div>
-      </header>
+      </div>
 
-      <div className="max-w-6xl mx-auto p-4 grid grid-cols-1 lg:grid-cols-3 gap-4">
-        <section className="lg:col-span-2">
-          <div className="relative h-[60vh] rounded-xl border border-slate-800 overflow-hidden bg-black">
-            {/* Si faltan texturas, aviso de cómo resolver */}
+      {/* Grid principal */}
+      <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
+        {/* CONTENEDOR DEL GLOBO: transparente (no usar .card aquí) */}
+        <section className="rounded-2xl border border-white/10 shadow-xl overflow-hidden lg:col-span-3">
+          <div className="relative h-[68vh] bg-transparent">
+            {/* Aviso si faltan texturas */}
             {texOk === false && (
               <div className="absolute inset-0 grid place-items-center text-center p-6">
                 <div>
@@ -177,16 +179,10 @@ export default function Home() {
 /public/textures/earth_normal_2k.jpg
 /public/textures/earth_specular_2k.jpg`}
                   </pre>
-                  <p className="text-slate-400 text-xs mt-2">
-                    Luego abre en el navegador:
-                    <br />
-                    <code>/textures/earth_political_4k.jpg</code>
-                  </p>
                 </div>
               </div>
             )}
 
-            {/* se  monta el globo solo si las texturas existen */}
             {texOk && (
               <Globe
                 key={center ? `${center.lat},${center.lon}` : "no-center"}
@@ -194,39 +190,39 @@ export default function Home() {
                 rings={ringsForGlobe}
               />
             )}
-          </div>
 
-          {error && <p className="mt-3 text-red-400 break-words">Error: {error}</p>}
+            {/* Vignette sutil */}
+            <div className="pointer-events-none absolute inset-0 shadow-[inset_0_0_150px_rgba(0,0,0,.55)]" />
+          </div>
         </section>
 
-        <aside className="lg:col-span-1">
-          <div className="rounded-xl border border-slate-800 p-3 bg-slate-950/50">
-            <Stats
-              center={center ?? { lat: 0, lon: 0 }}
-              rings={resp?.rings ?? null}
-              arrivals={resp?.arrivals ?? []}
-              intensity={resp?.intensity ?? null}
-            />
-          </div>
+        {/* Panel derecho: aquí SÍ usamos .card */}
+        <aside className="card p-4 lg:col-span-2">
+          <Stats
+            center={center ?? { lat: 0, lon: 0 }}
+            rings={resp?.rings ?? null}
+            arrivals={resp?.arrivals ?? []}
+            intensity={resp?.intensity ?? null}
+          />
 
           {!resp && !error && (
             <p className="text-slate-400 text-sm mt-3">
               Pulsa “Simular” para ver anillos P/S e intensidad.
             </p>
           )}
+          {error && <p className="text-red-400 text-sm mt-3 break-words">Error: {error}</p>}
         </aside>
-
-        {resp && (
-          <details className="lg:col-span-3 rounded-xl border border-slate-800 p-3 bg-slate-950/30">
-            <summary className="cursor-pointer text-slate-300">
-              Ver JSON dev (debug)
-            </summary>
-            <pre className="mt-2 text-xs overflow-auto max-h-72">
-              {JSON.stringify(resp, null, 2)}
-            </pre>
-          </details>
-        )}
       </div>
+
+      {/* Debug JSON */}
+      {resp && (
+        <details className="mt-6 rounded-xl border border-white/10 p-3 bg-white/5">
+          <summary className="cursor-pointer text-slate-300">Ver JSON dev (debug)</summary>
+          <pre className="mt-2 text-xs overflow-auto max-h-72">
+            {JSON.stringify(resp, null, 2)}
+          </pre>
+        </details>
+      )}
     </main>
   );
 }
