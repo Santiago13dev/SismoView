@@ -8,7 +8,13 @@ import { useMemo, useRef } from "react";
 export type Center = { lat: number; lon: number };
 export type RingSet = { p?: number[]; s?: number[] };
 
-type GlobeProps = { center?: Center | null; rings?: RingSet | null };
+type GlobeProps = {
+  center?: Center | null;
+  rings?: RingSet | null;
+  liveMinutes?: number;   // minutos transcurridos para frentes vivos
+  liveVpKmS?: number;     // velocidad P (km/s)
+  liveVsKmS?: number;     // velocidad S (km/s)
+};
 
 /* ------------------- utilidades geo ------------------- */
 const d2r = (d: number) => (d * Math.PI) / 180;
@@ -206,7 +212,19 @@ function RingCircle({
 }
 
 /* ------------------- World (dentro del Canvas) ------------------- */
-function World({ center, rings }: { center: Center; rings?: RingSet | null }) {
+function World({
+  center,
+  rings,
+  liveMinutes,
+  liveVpKmS,
+  liveVsKmS,
+}: {
+  center: Center;
+  rings?: RingSet | null;
+  liveMinutes?: number;
+  liveVpKmS?: number;
+  liveVsKmS?: number;
+}) {
   const worldRef = useRef<THREE.Group>(null!);
 
   useFrame((_, delta) => {
@@ -216,25 +234,55 @@ function World({ center, rings }: { center: Center; rings?: RingSet | null }) {
     g.rotation.y += delta * 0.05; // rotación suave
   });
 
+  // defaults de velocidad si no llegan por props
+  const vp = typeof liveVpKmS === "number" ? liveVpKmS : 6.0;
+  const vs = typeof liveVsKmS === "number" ? liveVsKmS : 3.5;
+
   return (
     <group ref={worldRef}>
       <EarthBall />
       <Atmosphere radius={1.04} />
       <Graticule />
       <EquatorNeon />
+
+      {/* Epicentro */}
       <Pin lat={center.lat} lon={center.lon} />
+
+      {/* Anillos estáticos (respuesta de backend) */}
       {rings?.p?.map((r, i) => (
         <RingCircle key={`p-${i}`} center={center} radiusKm={r} color="#7cf9f1" />
       ))}
       {rings?.s?.map((r, i) => (
         <RingCircle key={`s-${i}`} center={center} radiusKm={r} color="#ff8ec9" />
       ))}
+
+      {/* Frentes vivos P/S (timeline) */}
+      {typeof liveMinutes === "number" && (
+        <>
+          <RingCircle
+            center={center}
+            radiusKm={liveMinutes * 60 * vp}
+            color="#b0fff7"
+          />
+          <RingCircle
+            center={center}
+            radiusKm={liveMinutes * 60 * vs}
+            color="#ffb3d5"
+          />
+        </>
+      )}
     </group>
   );
 }
 
 /* ============================ GLOBE ============================ */
-export default function Globe({ center, rings }: GlobeProps) {
+export default function Globe({
+  center,
+  rings,
+  liveMinutes,
+  liveVpKmS,
+  liveVsKmS,
+}: GlobeProps) {
   if (!center) return null;
 
   return (
@@ -244,16 +292,22 @@ export default function Globe({ center, rings }: GlobeProps) {
       gl={{ antialias: true, alpha: true, toneMapping: THREE.ACESFilmicToneMapping }}
       style={{ width: "100%", height: "100%" }}
     >
-      {/* Luces y fondo (Canvas transparente para ver las estrellas del body) */}
+      {/* Luces */}
       <hemisphereLight intensity={0.5} color={"#cde8ff"} groundColor={"#0b1220"} />
       <directionalLight position={[5, 3, 5]} intensity={1.2} />
       <pointLight position={[-4, -3, -4]} intensity={0.5} />
 
-      {/* Estrellas suaves dentro del Canvas (además de las del body si las tienes) */}
+      {/* Estrellas dentro del Canvas */}
       <Stars radius={120} depth={50} count={4000} factor={3} fade speed={0.15} />
 
       {/* Mundo */}
-      <World center={center} rings={rings} />
+      <World
+        center={center}
+        rings={rings}
+        liveMinutes={liveMinutes}
+        liveVpKmS={liveVpKmS}
+        liveVsKmS={liveVsKmS}
+      />
       <Stand />
 
       {/* Controles */}
