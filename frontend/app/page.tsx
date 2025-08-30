@@ -3,6 +3,8 @@
 import { useState, useMemo, useEffect } from "react";
 import dynamic from "next/dynamic";
 import Playback from "../components/Playback"; // timeline play/pause/slider
+import LayerToggles, { LayerOptions } from "../components/LayerToggles";
+import SnapshotButton from "../components/SnapshotButton";
 
 // Carga en cliente
 const Globe = dynamic(() => import("../components/Globe"), { ssr: false });
@@ -30,6 +32,14 @@ export default function Home() {
 
   // Timeline (minutos)
   const [liveT, setLiveT] = useState(0);
+  const [getPng, setGetPng] = useState<(() => string) | null>(null);
+  const [layers, setLayers] = useState<LayerOptions>({
+    atmosphere: true,
+    graticule: true,
+    equator: true,
+    stars: true,
+    stand: true,
+  });
 
   // Chequeo de texturas para evitar crash del loader
   const [texOk, setTexOk] = useState<boolean | null>(null);
@@ -227,6 +237,12 @@ export default function Home() {
                 liveMinutes={liveT}
                 liveVpKmS={vp}
                 liveVsKmS={vs}
+                showAtmosphere={layers.atmosphere}
+                showGraticule={layers.graticule}
+                showEquator={layers.equator}
+                showStars={layers.stars}
+                showStand={layers.stand}
+                onReadyCapture={(fn) => setGetPng(() => fn)}
               />
             )}
 
@@ -243,6 +259,10 @@ export default function Home() {
             arrivals={resp?.arrivals ?? []}
             intensity={resp?.intensity ?? null}
           />
+          {/* Panel de capas */}
+        <div className="mt-4">
+           <LayerToggles value={layers} onChange={setLayers} />
+        </div>
 
           {!resp && !error && (
             <p className="text-slate-400 text-sm mt-3">
@@ -251,7 +271,15 @@ export default function Home() {
           )}
           {error && <p className="text-red-400 text-sm mt-3 break-words">Error: {error}</p>}
         </aside>
+         <div className="flex flex-wrap items-end gap-2">
+            {/* inputs y botón Simular */}
+          <button className="btn-primary" onClick={simular} disabled={loading || !center || texOk === false}>
+            {loading ? "Simulando..." : "Simular"}
+          </button>
 
+        {/* ⬇︎ Botón de captura */}
+          <SnapshotButton getPng={getPng ?? undefined} />
+        </div>
         {/* Timeline debajo del globo, ocupando las mismas 3 columnas */}
         <div className="lg:col-span-3">
           <div className="mt-2">
