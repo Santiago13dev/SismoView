@@ -13,7 +13,12 @@ type GlobeProps = {
   rings?: RingSet | null;
   liveMinutes?: number;   // minutos transcurridos para frentes vivos
   liveVpKmS?: number;     // velocidad P (km/s)
-  liveVsKmS?: number;     // velocidad S (km/s)
+  liveVsKmS?: number;  
+  showAtmosphere?: boolean;
+  showGraticule?: boolean;
+  showEquator?: boolean;
+  showStars?: boolean;
+  showStand?: boolean;   // velocidad S (km/s)
 };
 
 /* ------------------- utilidades geo ------------------- */
@@ -218,12 +223,20 @@ function World({
   liveMinutes,
   liveVpKmS,
   liveVsKmS,
+  showAtmosphere = true,
+  showGraticule = true,
+  showEquator = true,
 }: {
   center: Center;
   rings?: RingSet | null;
   liveMinutes?: number;
   liveVpKmS?: number;
   liveVsKmS?: number;
+  showAtmosphere?: boolean;
+  showGraticule?: boolean;
+  showEquator?: boolean;
+  showStars?: boolean;
+  showStand?: boolean;
 }) {
   const worldRef = useRef<THREE.Group>(null!);
 
@@ -282,6 +295,11 @@ export default function Globe({
   liveMinutes,
   liveVpKmS,
   liveVsKmS,
+  showAtmosphere = true,
+  showGraticule = true,
+  showEquator = true,
+  showStars = true,
+  showStand = true,
 }: GlobeProps) {
   if (!center) return null;
 
@@ -307,8 +325,13 @@ export default function Globe({
         liveMinutes={liveMinutes}
         liveVpKmS={liveVpKmS}
         liveVsKmS={liveVsKmS}
+        showAtmosphere={showAtmosphere}
+        showGraticule={showGraticule}
+        showEquator={showEquator}
+        showStars={showStars}
+        showStand={showStand}
       />
-      <Stand />
+      {showStand && <Stand />}
 
       {/* Controles */}
       <OrbitControls
