@@ -4,6 +4,7 @@ import * as THREE from "three";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { OrbitControls, Stars, useTexture } from "@react-three/drei";
 import { useMemo, useRef } from "react";
+import { useEffect } from "react";
 
 export type Center = { lat: number; lon: number };
 export type RingSet = { p?: number[]; s?: number[] };
@@ -19,6 +20,8 @@ type GlobeProps = {
   showEquator?: boolean;
   showStars?: boolean;
   showStand?: boolean;   // velocidad S (km/s)
+  onReadyCapture?: (fn: () => string) => void; // NUEVO: entrega una función capture()
+
 };
 
 /* ------------------- utilidades geo ------------------- */
@@ -288,6 +291,27 @@ function World({
   );
 }
 
+import { useThree } from "@react-three/fiber"; // ya lo tienes por Canvas/useFrame
+
+function CaptureProvider({
+  onReadyCapture,
+}: {
+  onReadyCapture?: (fn: () => string) => void;
+}) {
+  const { gl, scene, camera } = useThree();
+
+  // Registramos una función que renderiza y devuelve el PNG
+  React.useEffect(() => {
+    if (!onReadyCapture) return;
+    const capture = () => {
+      gl.render(scene, camera);
+      return gl.domElement.toDataURL("image/png");
+    };
+    onReadyCapture(capture);
+  }, [onReadyCapture, gl, scene, camera]);
+
+  return null;
+}
 /* ============================ GLOBE ============================ */
 export default function Globe({
   center,
@@ -295,6 +319,7 @@ export default function Globe({
   liveMinutes,
   liveVpKmS,
   liveVsKmS,
+  onReadyCapture,
   showAtmosphere = true,
   showGraticule = true,
   showEquator = true,
@@ -305,12 +330,18 @@ export default function Globe({
 
   return (
     <Canvas
-      camera={{ position: [0, 0, 3.1], fov: 42 }}
-      dpr={[1, 2]}
-      gl={{ antialias: true, alpha: true, toneMapping: THREE.ACESFilmicToneMapping }}
+     camera={{ position: [0, 0, 3.1], fov: 42 }}
+     dpr={[1, 2]}
+     gl={{
+      antialias: true,
+      alpha: true,
+      toneMapping: THREE.ACESFilmicToneMapping,
+      preserveDrawingBuffer: true, // ⬅︎ IMPORTANTE para toDataURL
+    }}
       style={{ width: "100%", height: "100%" }}
     >
       {/* Luces */}
+      <CaptureProvider onReadyCapture={onReadyCapture} />
       <hemisphereLight intensity={0.5} color={"#cde8ff"} groundColor={"#0b1220"} />
       <directionalLight position={[5, 3, 5]} intensity={1.2} />
       <pointLight position={[-4, -3, -4]} intensity={0.5} />
