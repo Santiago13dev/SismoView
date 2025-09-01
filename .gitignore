@@ -1,28 +1,41 @@
-# --- Node / Next.js ---
+
+# Root
+.DS_Store
+*.log
+*.tmp
+*.swp
+
+# Node / Next
 node_modules/
 .next/
-out/
+.out/
 dist/
+.vercel/
+.turbo/
+coverage/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
-.vercel/
-.env
-.env.* 
-!.env.example
-coverage/
+.env.local
+.env.*.local
 
-# --- Java / Gradle ---
-.gradle/
-build/
-!gradle/wrapper/gradle-wrapper.jar
-!gradle/wrapper/gradle-wrapper.properties
-# IDE
-.idea/
+# Frontend build artifacts
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+frontend/dist/
+frontend/.vercel/
+frontend/.turbo/
+
+# Backend (Gradle / Java)
+backend/.gradle/
+backend/build/
+backend/out/
+backend/logs/
 *.iml
-# Compilados
-*.class
-
-# --- VS Code (opcional) ---
+.idea/
 .vscode/
+
+# OS
+Thumbs.db
