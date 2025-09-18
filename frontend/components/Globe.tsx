@@ -1,10 +1,10 @@
 "use client";
 
+import React from "react";
 import * as THREE from "three";
-import { Canvas, useFrame } from "@react-three/fiber";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { OrbitControls, Stars, useTexture } from "@react-three/drei";
-import { useMemo, useRef } from "react";
-import { useEffect } from "react";
+import { useMemo, useRef, useEffect } from "react";
 
 export type Center = { lat: number; lon: number };
 export type RingSet = { p?: number[]; s?: number[] };
@@ -14,14 +14,13 @@ type GlobeProps = {
   rings?: RingSet | null;
   liveMinutes?: number;   // minutos transcurridos para frentes vivos
   liveVpKmS?: number;     // velocidad P (km/s)
-  liveVsKmS?: number;  
+  liveVsKmS?: number;     // velocidad S (km/s)
   showAtmosphere?: boolean;
   showGraticule?: boolean;
   showEquator?: boolean;
   showStars?: boolean;
-  showStand?: boolean;   // velocidad S (km/s)
-  onReadyCapture?: (fn: () => string) => void; // NUEVO: entrega una función capture()
-
+  showStand?: boolean;
+  onReadyCapture?: (fn: () => string) => void; // función para capturar screenshot
 };
 
 /* ------------------- utilidades geo ------------------- */
@@ -226,20 +225,12 @@ function World({
   liveMinutes,
   liveVpKmS,
   liveVsKmS,
-  showAtmosphere = true,
-  showGraticule = true,
-  showEquator = true,
 }: {
   center: Center;
   rings?: RingSet | null;
   liveMinutes?: number;
   liveVpKmS?: number;
   liveVsKmS?: number;
-  showAtmosphere?: boolean;
-  showGraticule?: boolean;
-  showEquator?: boolean;
-  showStars?: boolean;
-  showStand?: boolean;
 }) {
   const worldRef = useRef<THREE.Group>(null!);
 
@@ -291,8 +282,6 @@ function World({
   );
 }
 
-import { useThree } from "@react-three/fiber"; // ya lo tienes por Canvas/useFrame
-
 function CaptureProvider({
   onReadyCapture,
 }: {
@@ -301,7 +290,7 @@ function CaptureProvider({
   const { gl, scene, camera } = useThree();
 
   // Registramos una función que renderiza y devuelve el PNG
-  React.useEffect(() => {
+  useEffect(() => {
     if (!onReadyCapture) return;
     const capture = () => {
       gl.render(scene, camera);
@@ -312,6 +301,7 @@ function CaptureProvider({
 
   return null;
 }
+
 /* ============================ GLOBE ============================ */
 export default function Globe({
   center,
@@ -347,7 +337,7 @@ export default function Globe({
       <pointLight position={[-4, -3, -4]} intensity={0.5} />
 
       {/* Estrellas dentro del Canvas */}
-      <Stars radius={120} depth={50} count={4000} factor={3} fade speed={0.15} />
+      {showStars && <Stars radius={120} depth={50} count={4000} factor={3} fade speed={0.15} />}
 
       {/* Mundo */}
       <World
@@ -356,11 +346,6 @@ export default function Globe({
         liveMinutes={liveMinutes}
         liveVpKmS={liveVpKmS}
         liveVsKmS={liveVsKmS}
-        showAtmosphere={showAtmosphere}
-        showGraticule={showGraticule}
-        showEquator={showEquator}
-        showStars={showStars}
-        showStand={showStand}
       />
       {showStand && <Stand />}
 
