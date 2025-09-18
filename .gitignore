@@ -1,41 +1,204 @@
+# ===============================================
+# SismoView - Comprehensive .gitignore
+# ===============================================
 
-# Root
+# ========================
+# SYSTEM & EDITOR FILES
+# ========================
 .DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+*~
+*.swp
+*.swo
+.vscode/
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# ========================
+# LOGS & TEMPORARY FILES
+# ========================
 *.log
 *.tmp
-*.swp
-
-# Node / Next
-node_modules/
-.next/
-.out/
-dist/
-.vercel/
-.turbo/
+*.cache
+*.pid
+*.seed
+*.pid.lock
+.nyc_output/
+logs/
+pids/
+lib-cov/
 coverage/
+.grunt/
+.lock-wscript
+
+# ========================
+# NODE.JS / NPM / YARN
+# ========================
+node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
-.env.local
-.env.*.local
+.pnpm-debug.log*
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/install-state.gz
+.pnp.*
 
-# Frontend build artifacts
+# ========================
+# NEXT.JS / REACT
+# ========================
+.next/
+.out/
+out/
+dist/
+build/
+.vercel/
+.turbo/
+.swc/
+.parcel-cache/
+
+# ========================
+# ENVIRONMENT VARIABLES
+# ========================
+.env
+.env.*
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.envrc
+
+# ========================
+# JAVA / GRADLE / SPRING
+# ========================
+.gradle/
+build/
+out/
+target/
+bin/
+.settings/
+.project
+.classpath
+.factorypath
+.springBeans
+.sts4-cache/
+*.class
+*.jar
+*.war
+*.ear
+*.zip
+*.tar.gz
+*.rar
+hs_err_pid*
+
+# ========================
+# DOCKER & CONTAINERS
+# ========================
+.dockerignore
+docker-compose.override.yml
+.docker/
+
+# ========================
+# TESTING & COVERAGE
+# ========================
+.nyc_output/
+coverage/
+*.lcov
+.jest/
+test-results/
+playwright-report/
+test-results.xml
+
+# ========================
+# CERTIFICATES & KEYS
+# ========================
+*.pem
+*.key
+*.crt
+*.csr
+*.p12
+*.pfx
+ssl/
+certs/
+
+# ========================
+# DATABASE
+# ========================
+*.db
+*.sqlite
+*.sqlite3
+*.db-journal
+
+# ========================
+# BACKUP FILES
+# ========================
+*.bak
+*.backup
+*.old
+*.orig
+*~
+
+# ========================
+# FRONTEND SPECIFIC
+# ========================
 frontend/node_modules/
 frontend/.next/
 frontend/out/
 frontend/dist/
+frontend/build/
 frontend/.vercel/
 frontend/.turbo/
+frontend/.swc/
+frontend/coverage/
+frontend/storybook-static/
 
-# Backend (Gradle / Java)
+# ========================
+# BACKEND SPECIFIC
+# ========================
 backend/.gradle/
 backend/build/
 backend/out/
+backend/target/
 backend/logs/
-*.iml
-.idea/
-.vscode/
+backend/application-*.properties
+backend/application-*.yml
 
-# OS
-Thumbs.db
+# ========================
+# DEVELOPMENT TOOLS
+# ========================
+.vscode/settings.json
+.vscode/launch.json
+.vscode/extensions.json
+.history/
+.dev-tools/
+
+# ========================
+# PERFORMANCE MONITORING
+# ========================
+.clinic/
+.0x/
+*.clinic
+*.cpuprofile
+*.heapprofile
+*.heapsnapshot
+
+# ========================
+# MISC
+# ========================
+.cache/
+.temp/
+.tmp/
+temp/
+tmp/
+dist-ssr/
+*.tgz
+lerna-debug.log*
