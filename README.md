@@ -1,6 +1,12 @@
 
 # SismoView — Monorepo (Backend + Frontend)
 
+![Build Status](https://img.shields.io/badge/build-passing-brightgreen)
+![License](https://img.shields.io/badge/license-MIT-blue)
+![Version](https://img.shields.io/badge/version-1.0.0-orange)
+![Java](https://img.shields.io/badge/Java-21%2B-red)
+![Next.js](https://img.shields.io/badge/Next.js-14-black)
+
 Pagina web para visualizar simulaciones sísmicas y de tsunami en un **globo 3D** con estadísticas en tiempo real.
 
 > **Stack**
