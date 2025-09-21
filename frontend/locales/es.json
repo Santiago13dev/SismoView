@@ -1,0 +1,27 @@
+{
+  "common": {
+    "title": "SismoView",
+    "loading": "Cargando...",
+    "error": "Error",
+    "submit": "Enviar",
+    "cancel": "Cancelar",
+    "save": "Guardar"
+  },
+  "simulation": {
+    "title": "Simulación Sísmica",
+    "latitude": "Latitud",
+    "longitude": "Longitud",
+    "magnitude": "Magnitud",
+    "depth": "Profundidad (km)",
+    "simulate": "Simular",
+    "results": "Resultados",
+    "pWaves": "Ondas P",
+    "sWaves": "Ondas S"
+  },
+  "tsunami": {
+    "title": "Simulación de Tsunami",
+    "waveHeight": "Altura de ola",
+    "arrivalTime": "Tiempo de llegada",
+    "affectedAreas": "Áreas afectadas"
+  }
+}
