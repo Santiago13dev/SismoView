@@ -1,14 +1,56 @@
-// next.config.mjs
-// Mantén el config mínimo, estricto y documentado.
-// Tip: "images.unoptimized" evita warnings si usas <img> o texturas locales sin Image Optimization.
-
+/** @type {import('next').NextConfig} */
 const nextConfig = {
-  reactStrictMode: true, // Ayuda a detectar efectos/renders indebidos en dev
-  experimental: {
-    typedRoutes: true, // Ya lo usabas: asegura rutas tipadas en app router
-  },
+  reactStrictMode: true,
+  swcMinify: true,
   images: {
-    unoptimized: true, // No afecta a texturas en /public, pero evita optimización innecesaria
+    domains: ['localhost'],
+    formats: ['image/avif', 'image/webp'],
+  },
+  compiler: {
+    removeConsole: process.env.NODE_ENV === 'production',
+  },
+  experimental: {
+    optimizeCss: true,
+  },
+  webpack: (config, { isServer }) => {
+    if (!isServer) {
+      config.optimization.splitChunks = {
+        chunks: 'all',
+        cacheGroups: {
+          three: {
+            test: /[\\/]node_modules[\\/](three|@react-three)[\\/]/,
+            name: 'three',
+            priority: 10,
+          },
+        },
+      };
+    }
+    return config;
+  },
+  headers: async () => {
+    return [
+      {
+        source: '/:path*',
+        headers: [
+          {
+            key: 'X-DNS-Prefetch-Control',
+            value: 'on'
+          },
+          {
+            key: 'X-XSS-Protection',
+            value: '1; mode=block'
+          },
+          {
+            key: 'X-Frame-Options',
+            value: 'SAMEORIGIN'
+          },
+          {
+            key: 'X-Content-Type-Options',
+            value: 'nosniff'
+          },
+        ],
+      },
+    ];
   },
 };
 
